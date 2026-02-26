@@ -22,15 +22,15 @@ pipeline {
 }
 
         stage('Start Nginx') {
-            steps {
-                sh '''
-                docker rm -f nginx-lb || true
-                docker run -d -p 80:80 --name nginx-lb nginx
-                sleep 2
-                docker cp nginx/default.conf nginx-lb:/etc/nginx/conf.d/default.conf
-                docker exec nginx-lb nginx -s reload
-                '''
-            }
-        }
+    steps {
+        sh '''
+        docker rm -f nginx-lb || true
+        docker run -d -p 80:80 --name nginx-lb --network mynetwork nginx
+        sleep 2
+        docker cp nginx/default.conf nginx-lb:/etc/nginx/conf.d/default.conf
+        docker exec nginx-lb nginx -s reload
+        '''
+    }
+}
     }
 }
