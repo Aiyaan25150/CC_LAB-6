@@ -10,15 +10,16 @@ pipeline {
         }
 
         stage('Deploy Backends') {
-            steps {
-                sh '''
-                docker rm -f backend1 backend2 || true
-                docker run -d --name backend1 backend-app
-                docker run -d --name backend2 backend-app
-                sleep 3
-                '''
-            }
-        }
+    steps {
+        sh '''
+        docker network create mynetwork || true
+        docker rm -f backend1 backend2 || true
+        docker run -d --name backend1 --network mynetwork backend-app
+        docker run -d --name backend2 --network mynetwork backend-app
+        sleep 3
+        '''
+    }
+}
 
         stage('Start Nginx') {
             steps {
