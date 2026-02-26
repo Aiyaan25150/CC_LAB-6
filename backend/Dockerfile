@@ -1,5 +1,2 @@
-FROM gcc:latest
-WORKDIR /app
-COPY app.cpp .
-RUN g++ app.cpp -o app
-CMD ["./app"]
+FROM nginx
+COPY index.html /usr/share/nginx/html/index.html
